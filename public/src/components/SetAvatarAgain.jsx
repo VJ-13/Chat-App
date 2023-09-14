@@ -10,7 +10,6 @@ export default function SetAvatarAgain() {
         currentUser.isAvatarImageSet = false;
         currentUser.avatarImage = undefined;
         localStorage.setItem('chat-app-user', JSON.stringify(currentUser));
-        console.log(currentUser);
         navigate('/setAvatar');
     }
   return (

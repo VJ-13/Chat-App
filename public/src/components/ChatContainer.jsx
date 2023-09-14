@@ -41,7 +41,6 @@ export default function ChatContainer({currentChat, currentUser, socket}) {
     }, [arrivalMessage])
 
     useEffect(() => {
-        console.log(arrivalMessage);
         arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
     }, [arrivalMessage])
 

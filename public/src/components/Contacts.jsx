@@ -10,7 +10,6 @@ export default function Contacts({contacts, changeChat}) {
     const [currentSelected, setCurrentSelected] = useState(undefined)
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('chat-app-user'))
-        console.log(currentUser)
         if(currentUser){
             setCurrentUserName(currentUser.username)
             setCurrentUserImage(currentUser.avatarImage)
