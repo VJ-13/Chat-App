@@ -1,4 +1,4 @@
-export const host = "http://localhost:4001";
+export const host = "https://chat-app-server-bko0.onrender.com";
 export const registerRoute = `${host}/api/auth/register`;
 export const loginRoute = `${host}/api/auth/login`;
 export const setAvatarRoute = `${host}/api/auth/setAvatar`;
