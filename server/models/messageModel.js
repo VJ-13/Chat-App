@@ -1,6 +1,8 @@
+// Importing required modules
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Message schema
 const messageSchema = new Schema({
 
     message: {
