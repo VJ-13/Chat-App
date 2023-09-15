@@ -1,3 +1,4 @@
+// Import necessary packages
 import {React, useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
@@ -11,15 +12,22 @@ import { host } from '../utils/APIRoutes'
 
 function Chat() {
   const navigate = useNavigate()
+
+  // State to store contacts, current user and current chat
   const [contacts, setContacts] = useState([])
   const [currentUser, setCurrentUser] = useState(undefined)
   const [currentChat, setCurrentChat] = useState(undefined)
+
+  // Socket connection
   const socket = useRef();
+
+  // Check if user is already stored in local storage
   useEffect(() => {
       if (!localStorage.getItem('chat-app-user')) {
         navigate('/login');
       } 
       else {
+        // Set current user
         const setUser = async () => {
           try {
             const user = await JSON.parse(localStorage.getItem('chat-app-user'))
@@ -32,6 +40,7 @@ function Chat() {
       }
   }, []);
   
+  // Connect to socket and add user to the socket
   useEffect(() => {
     if (currentUser) {
       socket.current = io(host);
@@ -39,11 +48,14 @@ function Chat() {
     }
   }, [currentUser]);
 
+  // Get all contacts of the current user
   useEffect(() => {
     if (currentUser) {
       if (currentUser.isAvatarImageSet) {
+        // Get all contacts
         const getAllContacts = async () => {
           try {
+            // Get all users except the current user
             const data = await axios.get(`${allUserRoutes}/${currentUser._id}`);
             setContacts(data.data);
           } catch (error) {
@@ -57,6 +69,7 @@ function Chat() {
     }
   }, [currentUser]);
   
+  // Function to handle chat change
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   }
@@ -78,6 +91,7 @@ function Chat() {
   )
 }
 
+// Styled components
 const Container = styled.div`
 display: flex;
 justify-content: center;

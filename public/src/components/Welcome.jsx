@@ -1,3 +1,4 @@
+// Import necessary packages
 import React from 'react'
 import styled from 'styled-components'
 import Robot from '../assets/robot.gif'
@@ -17,6 +18,7 @@ export default function Welcome({currentUser}) {
   )
 }
 
+// Styled components
 const Container = styled.div`
     display: flex;
     justify-content: center;

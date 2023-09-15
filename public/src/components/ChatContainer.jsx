@@ -1,7 +1,6 @@
+// Import necessary packages
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import Logout from './Logout'
-import SetAvatarAgain from './SetAvatarAgain'
 import ChatInput from './ChatInput'
 import axios from 'axios'
 import { sendMessagesRoute } from '../utils/APIRoutes'
@@ -9,13 +8,19 @@ import { getMessagesRoute } from '../utils/APIRoutes'
 import {v4 as uuidv4} from 'uuid'
 
 export default function ChatContainer({currentChat, currentUser, socket}) {
+
+    // State to store messages and arrival message
     const [messages, setMessages] = useState([]);
     const [arrivalMessage, setArrivalMessage] = useState(null);
+
+    // Ref to scroll to the bottom of the chat
     const scrollRef = useRef();
 
+    // Get all messages of the current chat
     useEffect(() => {
         const getMessages = async () => {
             if(currentChat){
+                // Get all messages with the sender and receiver id
                 const data = await axios.post(getMessagesRoute, {sender: currentUser._id, receiver: currentChat._id});
                 setMessages(data.data);
             }
@@ -24,14 +29,19 @@ export default function ChatContainer({currentChat, currentUser, socket}) {
     }, [currentChat])
 
 
+    // Function to handle sending messages
     const handleSendMessage = async (message) => {
+        // Send message to the backend with the sender and receiver id
         await axios.post(sendMessagesRoute, {sender: currentUser._id, receiver: currentChat._id, message});
+        // Set the message in the socket.io
         socket.current.emit('send-msg', {sender: currentUser._id, receiver: currentChat._id, message});
+        // Destructure the messages and add the new message to the messages array
         const msgs = [...messages];
         msgs.push({senderSelf: true, message});
         setMessages(msgs);
     }
 
+    // Listen for messages from the socket
     useEffect(() => {
         if(socket.current){
             socket.current.on('msg-receive', (data) => {
@@ -40,10 +50,12 @@ export default function ChatContainer({currentChat, currentUser, socket}) {
         }
     }, [arrivalMessage])
 
+    // Add the arrival message to the messages array
     useEffect(() => {
         arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
     }, [arrivalMessage])
 
+    // Scroll to the bottom of the chat automatically
     useEffect(() => {
         scrollRef.current?.scrollIntoView({behavior: 'smooth'});
     }, [messages])
@@ -81,6 +93,7 @@ export default function ChatContainer({currentChat, currentUser, socket}) {
   )
 }
 
+// Styled components
 const Container = styled.div`
     padding-top: 1rem;
     display: grid;

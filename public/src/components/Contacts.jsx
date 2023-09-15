@@ -1,3 +1,4 @@
+// Import necessary packages
 import {React, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Logo from '../assets/logo.svg'
@@ -5,9 +6,13 @@ import Logout from './Logout'
 import SetAvatarAgain from './SetAvatarAgain'
 
 export default function Contacts({contacts, changeChat}) {
+
+    // State to store current user details
     const [currentUserName, setCurrentUserName] = useState(undefined)
     const [currentUserImage, setCurrentUserImage] = useState(undefined)
     const [currentSelected, setCurrentSelected] = useState(undefined)
+
+    // Get current user details from local storage
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('chat-app-user'))
         if(currentUser){
@@ -16,9 +21,10 @@ export default function Contacts({contacts, changeChat}) {
         }
     }, [])
 
-    
+    // Destructure the contacts
     const { users } = contacts;
 
+    // Function to change current chat
     const changeCurrentChat = (index, contact) => {
         setCurrentSelected(index)
         changeChat(contact)
@@ -72,6 +78,7 @@ export default function Contacts({contacts, changeChat}) {
   )
 }
 
+// Styled components
 const Container = styled.div`
   display: grid;
   grid-template-rows: 10% 75% 15%;

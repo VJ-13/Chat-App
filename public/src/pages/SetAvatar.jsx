@@ -1,3 +1,4 @@
+// Import necessary packages
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
@@ -12,10 +13,13 @@ export default function SetAvatar() {
 
     const api = "https://api.multiavatar.com";
     const navigate = useNavigate();
+
+    // State to store user details
     const [avatars, setAvatars] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedAvatars, setSelectedAvatars] = useState(undefined);
 
+    // Toast options
     const toastOption = {
         position: "bottom-right",
         autoClose: 8000,
@@ -24,12 +28,14 @@ export default function SetAvatar() {
         theme: "colored"
     }
 
+    // Check if user is already logged in by looking at local storage
     useEffect(() => {
         if(!localStorage.getItem('chat-app-user')){
             navigate('/login');
         }
     }, [navigate])
 
+    // Function to set profile picture for the user
     const setProfilePicture = async () => {
         if(selectedAvatars === undefined){
             toast.error('Please select an avatar', toastOption);
@@ -40,7 +46,10 @@ export default function SetAvatar() {
                 setSelectedAvatars(undefined);  
                 setAvatars([]);
             }
+            // Send the selected avatar to the backend
             const {data} = await axios.post(`${setAvatarRoute}/${user._id}`, {image: avatars[selectedAvatars]});
+
+            // Check if avatar is set successfully
             if(data.isSet){
                 user.isAvatarImageSet = true;
                 user.avatarImage = data.image;
@@ -53,20 +62,24 @@ export default function SetAvatar() {
         };
     }
 
+    // Function to get random avatars from the API
     const getData = async () => {
         const data = [];
         for(let i = 0; i < 4; i++){
-            const image = await axios.get(`${api}/${Math.round(Math.random() * (Math.round(Math.random() * 10000)))}.png?apikey=PhzeFp08tG2o7c`);
+            const image = await axios.get(`${api}/${Math.round(Math.random() * (Math.round(Math.random() * 10000)))}.png?apikey=${process.env.AVATAR_API}`);
+            // Push the image url to the data array
             data.push(image.config.url);
         };
         setAvatars(data);
         setIsLoading(false);
     };
 
+    // Get random avatars when the component mounts since the useEffect can not be an async function
     useEffect(() => {
         getData();
     }, []);
 
+    // Function to refresh the page
     const refreshPage = () => {
         window.location.reload();
     }
@@ -103,6 +116,7 @@ export default function SetAvatar() {
   )
 }
 
+// Styled components
 const Container = styled.div`
     display: flex;
     justify-content: center;

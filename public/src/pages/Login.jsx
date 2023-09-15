@@ -1,3 +1,4 @@
+// Import necessary packages
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom'
@@ -9,15 +10,22 @@ import { loginRoute } from '../utils/APIRoutes'
 
 function Login() {
     const navigate = useNavigate();
+
+    // State to store user details
     const [user, setUser] = useState({
         username: '', password: ''
     });
 
+    // Function to handle form submit
     const handleSubmit = async (event) => {
         event.preventDefault();
         if(handleValidation()){
             const {password, username} = user;
+
+            // Send user details to backend
             const {data} = await axios.post(loginRoute, {username, password});
+
+            // Check if user is in the database
             if(data.status === false){
                 toast.error(data.message, toastOption);
             }
@@ -29,6 +37,7 @@ function Login() {
 
     }
 
+    // Toast options
     const toastOption = {
         position: "bottom-right",
         autoClose: 8000,
@@ -37,6 +46,7 @@ function Login() {
         theme: "colored"
     }
 
+    // Check if user is already logged in by looking at local storage
     useEffect(() => {
         const user = localStorage.getItem('chat-app-user');
         if(user){
@@ -44,6 +54,7 @@ function Login() {
         }
     }, [])
 
+    // Function to validate user details
     const handleValidation = (event) => {
       const {password, username} = user;
       if (username === "" || password === "") {
@@ -53,7 +64,9 @@ function Login() {
       return true;
     }
 
+    // Function to handle input change
     const handleChange = (event) => {
+        // Update user state
         setUser({
             ...user, [event.target.name]: event.target.value
         })
@@ -78,6 +91,7 @@ function Login() {
   )
 }
 
+// Styled components
 const FormContainer = styled.div`
     height: 100vh;
     width: 100wh;

@@ -1,3 +1,4 @@
+// Import necessary packages
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import Picker from 'emoji-picker-react'
@@ -7,21 +8,26 @@ import { BsEmojiSmileFill } from 'react-icons/bs'
 
 export default function ChatInput({handleSendMessage}) {
 
+    // State to store emoji picker and message
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [message, setMessage] = useState('');
 
+    // Function to handle emoji picker hide and show
     const handleEmojiPickerHideShow = () => {
         setShowEmojiPicker(!showEmojiPicker);
     }
 
+    // Function to add the emoji to the message
     const handleEmojiClick = (e, emojiObject) => {
         setMessage(message + emojiObject.emoji);
     }
 
+    // Function to send the message
     const sendChat = (e) => {
         e.preventDefault();
         if(message.length > 0){
             handleSendMessage(message);
+            // Reset the message
             setMessage('');
         }
     }
@@ -42,6 +48,7 @@ export default function ChatInput({handleSendMessage}) {
     )
 }
 
+// Styled components
 const Container = styled.div`
     display: grid;
     grid-template-columns: 5% 95%;

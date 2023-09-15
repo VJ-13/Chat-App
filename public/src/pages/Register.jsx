@@ -1,4 +1,4 @@
-// Import necessary libraries
+// Import necessary packages
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { Link, useNavigate } from 'react-router-dom'
@@ -10,15 +10,21 @@ import { registerRoute } from '../utils/APIRoutes'
 
 function Register() {
     const navigate = useNavigate();
+
+    // State to store user details
     const [user, setUser] = useState({
         username: '', email: '', password: '', confirmPassword: '' 
     });
 
+    // Function to handle form submit
     const handleSubmit = async (event) => {
         event.preventDefault();
         if(handleValidation()){
             const {password, confirmPassword, username, email} = user;
+            // Send user details to backend
             const {data} = await axios.post(registerRoute, {username, email, password, confirmPassword});
+
+            // Check if user is created successfully
             if(data.status === false){
                 toast.error(data.message, toastOption);
             }
@@ -30,6 +36,7 @@ function Register() {
 
     }
 
+    // Toast options
     const toastOption = {
         position: "bottom-right",
         autoClose: 8000,
@@ -38,6 +45,7 @@ function Register() {
         theme: "colored"
     }
    
+    // Check if user is already logged in by looking at local storage
     useEffect(() => {
         const user = localStorage.getItem('chat-app-user');
         if(user){
@@ -45,6 +53,7 @@ function Register() {
         }
     }, [navigate])
 
+    // Function to validate user details
     const handleValidation = (event) => {
         const {password, confirmPassword, username, email} = user;
         if (password !== confirmPassword) {
@@ -67,10 +76,11 @@ function Register() {
             toast.success('User created successfully', toastOption);
             return true;
         }
-
     }
 
+    // Function to handle input change
     const handleChange = (event) => {
+        // Update user state
         setUser({
             ...user, [event.target.name]: event.target.value
         })
@@ -97,6 +107,7 @@ function Register() {
   )
 }
 
+// Styled components
 const FormContainer = styled.div`
     height: 100vh;
     width: 100wh;
