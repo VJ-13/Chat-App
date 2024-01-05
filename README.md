@@ -10,7 +10,9 @@ Login in with any username below:
 
 Passwords is `Tvs#omF59f7p`
 
-P.S. the backend is [here](https://chat-app-server-bko0.onrender.com)
+P.S. When you click login, give it a few minutes to verify the information from the backend server.
+
+The backend is [here](https://chat-app-server-bko0.onrender.com)
 
 
 ## Description
